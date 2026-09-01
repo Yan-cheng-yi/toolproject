@@ -1,0 +1,73 @@
+    1  sudo vmware-toolbox-cmd disk shrink /
+    2  sudo -i -u postgres
+    3  sudo apt-get update
+    4  sudo -i -u postgres
+    5  sudo apt-gre update
+    6  sudo apt-get update
+    7  sudo apt-get install postgresql postgresql-client
+    8  sudo -i -u postgres
+    9  mkdir os_experiment
+   10  cd os_experiment
+   11  nano my_cp.c
+   12  echo "Hello, this is my test file!" > source.txt
+   13  ls
+   14  nano my_cp.c
+   15  ls -l
+   16  ls -l /
+   17  man ls
+   18  find ~ -type f 2>/dev/null | sed 's|.*/||' | grep '\.' | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -5
+   19  ls /nonexistent /tmp > out.txt 2> err.txt
+   20  ls /nonexistent /tmp > all.txt 2>&1
+   21  cat out.txt
+   22  cat err.txt
+   23  cat all.txt
+   24  cat > trace.sh << 'EOF'
+set -x
+name="world"
+echo "Hello, $name"
+for i in 1 2; do
+  echo "loop $i"
+done
+set +x
+echo "追踪已关闭"
+EOF
+
+   25  chmod +x trace.sh
+   26  ./trace.sh
+   27  printf 'a 50 x\nb 150 y\nc 200 z\n' | awk '$2 > 100 {t=$1; $1=$3; $3=t; print}'
+   28  touch notes.txt
+   29  cp notes.txt "notes_$(date +%Y-%m-%d).txt"
+   30  ls
+   31  mkdir ~/globtest && cd ~/globtest
+   32  touch a.txt b.txt c.txt file1.txt file2.txt file10.txt notes.md
+   33  ls *.txt
+   34  ls file?.txt
+   35  ls {a,b,c}.txt
+   36  ls file[12].txt
+   37  ls {a,d}.txt
+   38  echo *.txt
+   39  git clone https://github.com/octocat/Hello-World.git
+   40  git config --global --get http.proxy
+   41  git config --global --get https.proxy
+   42  curl -I https://github.com
+   43  curl -I https://www.baidu.com
+   44  git clone https://gitee.com/octocat/Hello-World.git
+   45  mkdir ~/git-test && cd ~/git-test
+   46  git init
+   47  echo "Hello World" > README
+   48  git add README
+   49  git commit -m "Initial commit"
+   50  echo "my change" >> README
+   51  git status
+   52  git stash
+   53  git log --all --oneline
+   54  git stash pop
+   55  git config --global alias.graph "log --all --graph --decorate --oneline"
+   56  cat ~/.gitconfig
+   57  git config --global --get alias.graph
+   58  git graph'
+q
+q
+quit
+   59  git graph
+   60  history > my_commands.txt

@@ -1,0 +1,300 @@
+    1  sudo vmware-toolbox-cmd disk shrink /
+    2  sudo -i -u postgres
+    3  sudo apt-get update
+    4  sudo -i -u postgres
+    5  sudo apt-gre update
+    6  sudo apt-get update
+    7  sudo apt-get install postgresql postgresql-client
+    8  sudo -i -u postgres
+    9  mkdir os_experiment
+   10  cd os_experiment
+   11  nano my_cp.c
+   12  echo "Hello, this is my test file!" > source.txt
+   13  ls
+   14  nano my_cp.c
+   15  mkdir -p q01/input/docs q01/input/tmp
+   16  cd q01
+   17  printf "alpha\nbeta\n" > input/docs/"notes one.txt"
+   18  echo "hidden" > input/docs/.secret.txt
+   19  touch input/tmp/empty.txt
+   20  printf "log line 1\nlog line 2\n" > input/run.log
+   21  pwd -P
+   22  ls -la input/
+   23  mkdir -p work/24120011027
+   24  find input -type f -name "*.txt" -print0 | xargs -0 -I {} cp --parents {} work/24120011027/
+   25  cd work/24120011027
+   26  find input -type d -exec chmod 750 {} +
+   27  find input -type f -exec chmod 640 {} +
+   28  find input -type f -exec wc -c {} + | awk '{print $2, $1}' > inventory.txt
+   29  cd ../..
+   30  mkdir -p q02 && cd q02
+   31  cat << 'EOF' > access.csv
+timestamp, user, path, status, latency_ms
+09:00:01, alice, /api/users, 200, 120
+09:00:02, bob, /api/orders, 500, 310
+09:00:03, alice, /api/users, 503, 180
+09:00:04, carol, /login, 500, 90
+09:00:05, bob, /api/orders, 502, 260
+09:00:06, dave, /health, 200, 20
+09:00:07, alice, /api/orders, 500, 420
+09:00:08, carol, /api/users, 500, 150
+EOF
+
+   32  cat << 'EOF' > analyze.sh
+if [ ! -f "$1" ]; then
+    echo "Error: File '$1' does not exist." >&2
+    exit 1
+fi
+awk -F ', *' 'NR > 1 && $4 ~ /^5[0-9]{2}$/ {count[$3]++} END {for (p in count) print count[p], p}' "$1" | \
+sort -k1,1nr -k2,2 | head -n 2
+awk -F ', *' 'NR > 1 {sum += $5; count++} END {if (count > 0) printf "%.2f\n", sum/count}' "$1"
+EOF
+
+   33  chmod +x analyze.sh
+   34  ./analyze.sh access.csv
+   35  ./analyze.sh not_exist.csv
+   36  echo $?
+   37  cd ..
+   38  mkdir -p q03 && cd q03
+   39  git init
+   40  echo "mode=normal" > config.txt
+   41  git add config.txt
+   42  git commit -m "Initial commit"
+   43  git checkout -b feature-a
+   44  echo "mode=safe" > config.txt
+   45  git commit -am "Set mode=safe"
+   46  git checkout main
+   47  git checkout -b feature-b
+   48  echo "mode=fast" > config.txt
+   49  git commit -am "Set mode=fast"
+   50  git checkout main
+   51  git merge feature-a
+   52  git merge feature-b
+   53  git branch
+   54  rm -rf .git
+   55  git init
+   56  echo "mode=normal" > config.txt
+   57  git add config.txt
+   58  git commit -m "Initial commit"
+   59  git checkout -b feature-a
+   60  echo "mode=safe" > config.txt
+   61  git commit -am "Set mode=safe"
+   62  git checkout main
+   63  git checkout -b feature-b
+   64  echo "mode=fast" > config.txt
+   65  git commit -am "Set mode=fast"
+   66  git checkout main
+   67  git merge feature-a
+   68  git merge feature-b
+   69  git config --global user.email "3470965175@qq.com"
+   70  git config --global user.name "ycy"
+   71  rm -rf .git
+   72  git init
+   73  echo "mode=normal" > config.txt
+   74  git add config.txt
+   75  git commit -m "Initial commit"
+   76  git checkout -b feature-a
+   77  echo "mode=safe" > config.txt
+   78  git commit -am "Set mode=safe"
+   79  git branch
+   80  git checkout master
+   81  git checkout -b feature-b
+   82  echo "mode=fast" > config.txt
+   83  git commit -am "Set mode=fast"
+   84  git checkout main || git checkout master
+   85  git merge feature-a
+   86  git merge feature-b
+   87  printf "mode=safe\nnote=reviewed\n" > config.txt
+   88  git add config.txt
+   89  git commit -m "Merge feature-b and resolve conflict"
+   90  git log --all --graph --decorate --oneline
+   91  cd ..
+   92  mkdir -p q04 && cd q04
+   93  cat << 'EOF' > report.tex
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+\title{Tool Report}
+\author{yanchengyi-24120011027}
+\maketitle
+\section{Result}
+As shown in Equation~\eqref{eq:einstein}, the energy-mass equivalence is fundamental.
+\begin{equation}
+\label{eq:einstein}
+E = mc^2
+\end{equation}
+The experimental data is summarized in Table~\ref{tab:data}.
+\begin{table}[htbp]
+\centering
+\caption{Sample Data Table}
+\label{tab:data}
+\begin{tabular}{|c|c|}
+\hline
+Item & Value \\
+\hline
+Alpha & 100 \\
+\hline
+\end{tabular}
+\end{table}
+\end{document}
+EOF
+
+   94  latexmk -pdf -halt-on-error report.tex
+   95  sudo apt update
+   96  sudo apt install latexmk texlive-latex-extra -y
+   97  latexmk -pdf -halt-on-error report.tex
+   98  ls -l report.pdf
+   99  cd..
+  100  cd ..
+  101  cd q01
+  102  cd word
+  103  cd work
+  104  cd 24120011027
+  105  find input -type f -exec stat -c "%n %s" {} + > inventory.txt
+  106  mkdir -p q05 && cd q05
+  107  cat << 'EOF' > worker.sh
+trap 'echo CLEAN_EXIT >> cleanup.log; exit 0' TERM INT
+n=0
+while true; do
+  echo "$n"
+  n=$((n+1))
+  sleep 1
+done
+EOF
+
+  108  chmod +x worker.sh
+  109  ./worker.sh > stdout.log 2> stderr.log
+  110  bg
+  111  jobs
+  112  kill -TERM $(jobs -p)
+  113  sleep 2
+  114  cat cleanup.log
+  115  jobs
+  116  cd ..
+  117  mkdir -p q06 && cd q06
+  118  cat << 'EOF' > math_utils.py
+def total_price(price: float, count: int) -> float:
+    return price * count
+EOF
+
+  119  cat << 'EOF' > app.py
+from math_utils import total_price
+print(total_price(12.5, 4))
+EOF
+
+  120  cat << 'EOF' > test_math_utils.py
+from math_utils import total_price
+def test_total_price():
+    assert total_price(12.5, 4) == 50.0
+EOF
+
+  121  cd app.py
+  122  nano app.py
+  123  grep -rn "def total_price" .
+  124  grep -rn "total_price" .
+  125  sed -i 's/total_price/calculate_total/g' math_utils.py app.py test_math_utils.py
+  126  grep -rn "calculate_total" .
+  127  sed -i '1i import os' app.py
+  128  ruff check .
+  129  sudo snap install ruff
+  130  sed -i '1i import os' app.py
+  131  ruff check .
+  132  nano app.py
+  133  sed -i '2d' app.py
+  134  nano app.py
+  135  ruff check .
+  136  sed -i '/import os/d' app.py
+  137  ruff check .
+  138  pytest
+  139  sudo apt install python-pytest
+  140  ruff check --fix .
+  141  ruff check .
+  142  pytest
+  143  python3 -m pytest
+  144  pytest-3
+  145  sudo apt install python3-pytest
+  146  python3 -m pytest
+  147  cd ..
+  148  mkdir -p q07 && cd q07
+  149  cat << 'EOF' > merge_sort.py
+def merge(left, right):
+    result = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i]); i += 1
+        else:
+            result.append(right[i]); j += 1
+return result + left[i:] + right[j:]
+EOF
+
+  150  cat << 'EOF' > merge_sort.py
+def merge(left, right):
+    result = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i]); i += 1
+        else:
+            result.append(right[i]); j += 1 
+    return result + left[i:] + right[j:]
+def merge_sort(a):
+    if len(a) <= 1: return a
+    m = len(a) // 2
+    return merge(merge_sort(a[:m]), merge_sort(a[m:]))
+print(merge_sort([3, 1, 4, 1, 5, 9, 2, 6]))
+EOF
+
+  151  python3 merge_sort.py
+  152  python3 -m pdb merge_sort.py
+  153  sed -i 's/right\[i\]/right\[j\]/g' merge_sort.py
+  154  python3 merge_sort.py
+  155  cat << 'EOF' > test_merge_sort.py
+from merge_sort import merge_sort
+
+def test_given_input():
+    assert merge_sort([3, 1, 4, 1, 5, 9, 2, 6]) == [1, 1, 2, 3, 4, 5, 6, 9]
+
+def test_duplicate_elements():
+    assert merge_sort([5, 2, 2, 8, 5, 1, 1]) == [1, 1, 2, 2, 5, 5, 8]
+EOF
+
+  156  pytest-3
+  157  cd
+  158  mkdir -p q08 && cd q08
+  159  cat << 'EOF' > generate_words.py
+import random
+random.seed(20260831)
+vocab = [f"w{i}" for i in range(1000)]
+with open("words.txt", "w", encoding="utf-8") as f:
+    f.write(" ".join(random.choice(vocab) for _ in range(30000)))
+EOF
+
+  160  cat << 'EOF' > wordfreq.py
+words = open("words.txt", encoding="utf-8").read().split()
+unique = []
+for word in words:
+    if word not in unique:
+        unique.append(word)
+print("count=", len(unique))
+EOF
+
+  161  python3 generate_words.py
+  162  ls words.txt
+  163  time python3 wordfreq.py
+  164  python3 -m cProfile -s cumulative wordfreq.py
+  165  cat << 'EOF' > wordfreq.py
+words = open("words.txt", encoding="utf-8").read().split()
+unique_set = set()
+for word in words:
+    unique_set.add(word)
+
+unique = list(unique_set)
+print("count=", len(unique))
+EOF
+
+  166  cat wordfreq.py
+  167  python3 wordfreq.py
+  168  time python3 wordfreq.py
+  169  cd
+  170  history > my_commands.txt

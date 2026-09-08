@@ -1,0 +1,205 @@
+    1  sudo vmware-toolbox-cmd disk shrink /
+    2  sudo -i -u postgres
+    3  sudo apt-get update
+    4  sudo -i -u postgres
+    5  sudo apt-gre update
+    6  sudo apt-get update
+    7  sudo apt-get install postgresql postgresql-client
+    8  sudo -i -u postgres
+    9  mkdir os_experiment
+   10  cd os_experiment
+   11  nano my_cp.c
+   12  echo "Hello, this is my test file!" > source.txt
+   13  ls
+   14  nano my_cp.c
+   15  touch -- -myfile
+   16  ls -l -myfile
+   17  mkdir q09
+   18  cd q0
+   19  mkdir q09
+   20  cd q09
+   21  mkdir -p src/greetlab
+   22  touch src/greetlab/__init__.py
+   23  cat << 'EOF' > src/greetlab/cli.py
+import argparse
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--name", required=True)
+    a = p.parse_args()
+    print(f"Hello, {a.name}!")
+EOF
+
+   24  cat << 'EOF' > pyproject.toml
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "greetlab-24120011027"
+version = "0.1.0"
+[project.scripts]
+sdt-greet = "greetlab.cli:main"
+EOF
+
+   25  python -m build
+   26  python3 -m build
+   27  pip3 install build
+   28  python3 -m build
+   29  python3 -m venv .venv
+   30  source .venv/bin/activate
+   31  pip install dist/greetlab_24120011027-0.1.0-py3-none-any.whl
+   32  cd ..
+   33  sdt-greet --name 24120011027
+   34  cd q09
+   35  deactivate
+   36  cd ..
+   37  cp -r q09 q10
+   38  cd q10
+   39  mkdir -p tests
+   40  cat << 'EOF' > tests/test_cli.py
+import pytest
+from greetlab.cli import main
+def test_empty_name_raises_system_exit(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["sdt-greet", "--name", "   "])
+    with pytest.raises(SystemExit) as exc_info:
+        main()
+    assert exc_info.value.code == 2
+EOF
+
+   41  pytest
+   42  cat << 'EOF' > src/greetlab/cli.py
+import argparse
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--name", required=True)
+    a = p.parse_args()
+    if not a.name.strip():
+        p.error("Name cannot be empty")
+    print(f"Hello, {a.name}!")
+EOF
+
+   43  pytest
+   44  python3 -m pytest
+   45  python3 -m pip install -e .
+   46  python3 -m pytest
+   47  cat << 'EOF' > src/greetlab/cli.py
+import argparse
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--name", required=True)
+    a = p.parse_args()
+    if not a.name.strip():
+        p.error("Name cannot be empty")
+    print(f"Hello, {a.name}!")
+EOF
+
+   48  python3 -m pytest
+   49  cat << 'EOF' > src/greetlab/cli.py
+import argparse
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--name", required=True)
+    a = p.parse_args()
+    print(f"Hello, {a.name}!")
+EOF
+
+   50  python3 -m pytest
+   51  cat << 'EOF' > src/greetlab/cli.py
+> import argparse
+> def main():
+>     p = argparse.ArgumentParser()
+>     p.add_argument("--name", required=True)
+>     a = p.parse_args()
+>     if not a.name.strip():
+>         p.error("Name cannot be empty")
+>     print(f"Hello, {a.name}!")
+> EOF
+EOF
+
+   52  cat << 'EOF' > src/greetlab/cli.py
+import argparse
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--name", required=True)
+    a = p.parse_args()
+    if not a.name.strip():
+        p.error("Name cannot be empty")
+    print(f"Hello, {a.name}!")
+EOF
+
+   53  python3 -m pytest
+   54  git diff
+   55  git diff --no-index ../q09/src/greetlab/cli.py src/greetlab/cli.py
+   56  python3 -m pytest
+   57  EOF
+   58  cat << 'EOF' > ai_log.md
+核心提示：要求校验 --name 参数去除首尾空白，为空时抛出 exit code 2 错误
+智能体改动：在 src/greetlab/cli.py 中加入 a.name.strip() 判断并调用 p.error()
+人工验证：检查 diff 确认未修改其他文件，运行 pytest 确认测试成功通过
+EOF
+
+   59  cd ..
+   60  mkdir -p q11
+   61  cd q11
+   62  touch communication.md
+   63  cd communication.md
+   64  nano communication.md
+   65  wc communication.md
+   66  cd ..
+   67  mkdir -p q12
+   68  cd q12
+   69  cat > train.py <<'EOF'
+import torch
+from torch import nn
+torch.manual_seed(20260907)
+x = torch.linspace(-1, 1, 101).reshape(-1, 1)
+y = 3 * x - 1
+loss_fn = nn.MSELoss()
+model = nn.Linear(1, 1)
+opt = torch.optim.SGD(model.parameters(), lr=0.1)
+for _ in range(200):
+    pred = model(x)
+    loss = loss_fn(pred, y)
+    opt.zero_grad()
+    loss.backward()
+    opt.step()
+model.eval()
+with torch.no_grad():
+    pred_final = model(x)
+    loss_final = loss_fn(pred_final, y)
+    weight = model.weight.item()
+    bias = model.bias.item()
+    print(f"final loss: {loss_final.item():.6f}")
+    print(f"weight: {weight:.4f}, bias: {bias:.4f}")
+EOF
+
+   70  python3 train.py
+   71  python3 -m pip install --upgrade pip --user
+   72  python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu --user
+   73  export PATH="$HOME/.local/bin:$PATH"
+   74  python3 -c "import torch; print(torch.__version__)"
+   75  python3 train.py
+   76  cd ..
+   77  cp -r q10 q13
+   78  cd q13
+   79  mkdir -p tests
+   80  cat > tests/test_cli.py <<'EOF'
+import subprocess
+import sys
+def test_normal_name():
+    result = subprocess.run(
+        [sys.executable, "-m", "greetlab.cli", "--name", "Alice"],
+        capture_output=True,
+        text=True
+    )
+    assert result.returncode == 0
+    assert "Hello, Alice!" in result.stdout
+def test_blank_name_raise_exit2():
+    result = subprocess.run(
+        [sys.executable, "-m", "greetlab.cli", "--name", "   "],
+        capture_output=True,
+        text=True
+    )
+    assert result.returncode == 2
+EOF
+
+   81  history > commands3.txt

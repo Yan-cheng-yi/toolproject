@@ -1,0 +1,1109 @@
+    1  sudo vmware-toolbox-cmd disk shrink /
+    2  sudo -i -u postgres
+    3  sudo apt-get update
+    4  sudo -i -u postgres
+    5  sudo apt-gre update
+    6  sudo apt-get update
+    7  sudo apt-get install postgresql postgresql-client
+    8  sudo -i -u postgres
+    9  mkdir os_experiment
+   10  cd os_experiment
+   11  nano my_cp.c
+   12  echo "Hello, this is my test file!" > source.txt
+   13  ls
+   14  nano my_cp.c
+   15  touch -- -myfile
+   16  ls -l -myfile
+   17  mkdir q09
+   18  cd q0
+   19  mkdir q09
+   20  cd q09
+   21  mkdir -p src/greetlab
+   22  touch src/greetlab/__init__.py
+   23  cat << 'EOF' > src/greetlab/cli.py
+   24  import argparse
+   25  def main():
+   26      p = argparse.ArgumentParser()
+   27      p.add_argument("--name", required=True)
+   28      a = p.parse_args()
+   29      print(f"Hello, {a.name}!")
+   30  EOF
+   31  cat << 'EOF' > pyproject.toml
+   32  [build-system]
+   33  requires = ["setuptools>=68"]
+   34  build-backend = "setuptools.build_meta"
+   35  [project]
+   36  name = "greetlab-24120011027"
+   37  version = "0.1.0"
+   38  [project.scripts]
+   39  sdt-greet = "greetlab.cli:main"
+   40  EOF
+   41  python -m build
+   42  python3 -m build
+   43  pip3 install build
+   44  python3 -m build
+   45  python3 -m venv .venv
+   46  source .venv/bin/activate
+   47  pip install dist/greetlab_24120011027-0.1.0-py3-none-any.whl
+   48  cd ..
+   49  sdt-greet --name 24120011027
+   50  cd q09
+   51  deactivate
+   52  cd ..
+   53  cp -r q09 q10
+   54  cd q10
+   55  mkdir -p tests
+   56  cat << 'EOF' > tests/test_cli.py
+   57  import pytest
+   58  from greetlab.cli import main
+   59  def test_empty_name_raises_system_exit(monkeypatch):
+   60      monkeypatch.setattr("sys.argv", ["sdt-greet", "--name", "   "])
+   61      with pytest.raises(SystemExit) as exc_info:
+   62          main()
+   63      assert exc_info.value.code == 2
+   64  EOF
+   65  pytest
+   66  cat << 'EOF' > src/greetlab/cli.py
+   67  import argparse
+   68  def main():
+   69      p = argparse.ArgumentParser()
+   70      p.add_argument("--name", required=True)
+   71      a = p.parse_args()
+   72      if not a.name.strip():
+   73          p.error("Name cannot be empty")
+   74      print(f"Hello, {a.name}!")
+   75  EOF
+   76  pytest
+   77  python3 -m pytest
+   78  python3 -m pip install -e .
+   79  python3 -m pytest
+   80  cat << 'EOF' > src/greetlab/cli.py
+   81  import argparse
+   82  def main():
+   83      p = argparse.ArgumentParser()
+   84      p.add_argument("--name", required=True)
+   85      a = p.parse_args()
+   86      if not a.name.strip():
+   87          p.error("Name cannot be empty")
+   88      print(f"Hello, {a.name}!")
+   89  EOF
+   90  python3 -m pytest
+   91  cat << 'EOF' > src/greetlab/cli.py
+   92  import argparse
+   93  def main():
+   94      p = argparse.ArgumentParser()
+   95      p.add_argument("--name", required=True)
+   96      a = p.parse_args()
+   97      print(f"Hello, {a.name}!")
+   98  EOF
+   99  python3 -m pytest
+  100  cat << 'EOF' > src/greetlab/cli.py
+  101  > import argparse
+  102  > def main():
+  103  >     p = argparse.ArgumentParser()
+  104  >     p.add_argument("--name", required=True)
+  105  >     a = p.parse_args()
+  106  >     if not a.name.strip():
+  107  >         p.error("Name cannot be empty")
+  108  >     print(f"Hello, {a.name}!")
+  109  > EOF
+  110  EOF
+  111  cat << 'EOF' > src/greetlab/cli.py
+  112  import argparse
+  113  def main():
+  114      p = argparse.ArgumentParser()
+  115      p.add_argument("--name", required=True)
+  116      a = p.parse_args()
+  117      if not a.name.strip():
+  118          p.error("Name cannot be empty")
+  119      print(f"Hello, {a.name}!")
+  120  EOF
+  121  python3 -m pytest
+  122  git diff
+  123  git diff --no-index ../q09/src/greetlab/cli.py src/greetlab/cli.py
+  124  python3 -m pytest
+  125  EOF
+  126  cat << 'EOF' > ai_log.md
+  127  核心提示：要求校验 --name 参数去除首尾空白，为空时抛出 exit code 2 错误
+  128  智能体改动：在 src/greetlab/cli.py 中加入 a.name.strip() 判断并调用 p.error()
+  129  人工验证：检查 diff 确认未修改其他文件，运行 pytest 确认测试成功通过
+  130  EOF
+  131  cd ..
+  132  mkdir -p q11
+  133  cd q11
+  134  touch communication.md
+  135  cd communication.md
+  136  nano communication.md
+  137  wc communication.md
+  138  cd ..
+  139  mkdir -p q12
+  140  cd q12
+  141  cat > train.py <<'EOF'
+  142  import torch
+  143  from torch import nn
+  144  torch.manual_seed(20260907)
+  145  x = torch.linspace(-1, 1, 101).reshape(-1, 1)
+  146  y = 3 * x - 1
+  147  loss_fn = nn.MSELoss()
+  148  model = nn.Linear(1, 1)
+  149  opt = torch.optim.SGD(model.parameters(), lr=0.1)
+  150  for _ in range(200):
+  151      pred = model(x)
+  152      loss = loss_fn(pred, y)
+  153      opt.zero_grad()
+  154      loss.backward()
+  155      opt.step()
+  156  model.eval()
+  157  with torch.no_grad():
+  158      pred_final = model(x)
+  159      loss_final = loss_fn(pred_final, y)
+  160      weight = model.weight.item()
+  161      bias = model.bias.item()
+  162      print(f"final loss: {loss_final.item():.6f}")
+  163      print(f"weight: {weight:.4f}, bias: {bias:.4f}")
+  164  EOF
+  165  python3 train.py
+  166  python3 -m pip install --upgrade pip --user
+  167  python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu --user
+  168  export PATH="$HOME/.local/bin:$PATH"
+  169  python3 -c "import torch; print(torch.__version__)"
+  170  python3 train.py
+  171  cd ..
+  172  cp -r q10 q13
+  173  cd q13
+  174  mkdir -p tests
+  175  cat > tests/test_cli.py <<'EOF'
+  176  import subprocess
+  177  import sys
+  178  def test_normal_name():
+  179      result = subprocess.run(
+  180          [sys.executable, "-m", "greetlab.cli", "--name", "Alice"],
+  181          capture_output=True,
+  182          text=True
+  183      )
+  184      assert result.returncode == 0
+  185      assert "Hello, Alice!" in result.stdout
+  186  def test_blank_name_raise_exit2():
+  187      result = subprocess.run(
+  188          [sys.executable, "-m", "greetlab.cli", "--name", "   "],
+  189          capture_output=True,
+  190          text=True
+  191      )
+  192      assert result.returncode == 2
+  193  EOF
+  194  history > commands3.txt
+  195  sudo apt install gcc linux-tools-common linux-tools-$(uname -r) -y
+  196  sudo apt install git -y
+  197  cat > slow.c <<EOF
+  198  #include <math.h>
+  199  #include <stdio.h>
+  200  double slow_computation(int n) {
+  201      double result = 0;
+  202      for (int i = 0; i < n; i++) {
+  203          for (int j = 0; j < 1000; j++) {
+  204              result += sin(i * j) * cos(i + j);
+  205          }
+  206      }
+  207      return result;
+  208  }
+  209  int main() {
+  210      double r = 0;
+  211      for (int i = 0; i < 100; i++) {
+  212          r += slow_computation(1000);
+  213      }
+  214      printf("Result: %f\n", r);
+  215      return 0;
+  216  }
+  217  EOF
+  218  ls slow.c
+  219  cat slow.c
+  220  gcc -g -O2 slow.c -o slow -lm
+  221  perf record -g ./slow
+  222  sudo sysctl -w kernel.perf_event_paranoid=1
+  223  perf record -g ./slow
+  224  perf report
+  225  perf script > out.perf
+  226  ./FlameGraph/shturl.cc/dkruThhBs2a out.perf > out.folded
+  227  perf script > out.perf
+  228  ./FlameGraph/shturl.cc/KOO028FHlG5 out.perf > out.folded
+  229  ls ./FlameGraph/
+  230  git clone https://github.com/brendangregg/FlameGraph.git
+  231  git clone shturl.cc/MDc0GRmcreVoW5ZvSLHqYeMwPWSXc3
+  232  git clone https://gitee.com/mirrors/FlameGraph.git
+  233  ls FlameGraph
+  234  perf script | ./FlameGraph/shturl.cc/byY5cHe8Bzn | ./FlameGraph/flamegraph.pl > slow_flame.svg
+  235  perf script | ./FlameGraph/shturl.cc/U5LgF1LsLGL | ./FlameGraph/flamegraph.pl > slow_flame.svg
+  236  perf script | ./FlameGraph/shturl.cc/WhiQmaZTOgU | ./FlameGraph/flamegraph.pl > slow_flame.svg
+  237  gcc -g -o slow slow.c
+  238  perf record -g ./slow
+  239  perf script | ./FlameGraph/shturl.cc/WhiQmaZTOgU | ./FlameGraph/flamegraph.pl > slow_flame.svg
+  240  ssh ouc@islouc
+  241  ssh ouc@islouc-vm
+  242  cp -r q10 q13 && cd q13
+  243  ls q13
+  244  ls
+  245  vim pyproject.toml
+  246  cd tests
+  247  ls
+  248  vim test_cli.py
+  249  cd ..
+  250  vim src/greetlab/cli.py
+  251  vim test/test_cli.py
+  252  vim tests/test_cli.py
+  253  cat << 'EOF' > check.sh
+  254  #!/usr/bin/env bash
+  255  set -euo pipefail
+  256  ruff format --check .
+  257  ruff check .
+  258  pytest
+  259  EOF
+  260  chmod +x check.sh
+  261  pip install -e .
+  262  cat << 'EOF' > pyproject.toml
+  263  [build-system]
+  264  requires = ["setuptools>=68"]
+  265  build-backend = "setuptools.build_meta"
+  266  [project]
+  267  name = "greetlab-24120011027"
+  268  version = "0.1.0"
+  269  [project.scripts]
+  270  sdt-greet = "greetlab.cli:main"
+  271  [tool.ruff]
+  272  line-length = 88
+  273  [tool.pytest.ini_options]
+  274  testpaths = ["tests"]
+  275  pythonpath = ["src"]
+  276  EOF
+  277  pip install -e .
+  278  ruff format .
+  279  cat << 'EOF' > src/greetlab/cli.py
+  280  import argparse
+  281  def main():
+  282      p = argparse.ArgumentParser()
+  283      p.add_argument("--name", required=True)
+  284      a = p.parse_args()
+  285      if not a.name.strip():
+  286          p.error("name cannot be empty")
+  287      print(f"Hello, {a.name}")
+  288  if __name__ == "__main__":
+  289      main()
+  290  EOF
+  291  cat << 'EOF' > src/greetlab/cli.py
+  292  import argparse
+  293  def main():
+  294      p = argparse.ArgumentParser()
+  295      p.add_argument("--name", required=True)
+  296      a = p.parse_args()
+  297      if not a.name.strip():
+  298          p.error("name cannot be empty")
+  299      print(f"Hello, {a.name}")
+  300  if __name__ == "__main__":
+  301      main()
+  302  EOF
+  303  ruff format .
+  304  ./check.sh
+  305  echo $?
+  306  cat << 'EOF' > tests/test_cli.py
+  307  import subprocess
+  308  import sys
+  309  def test_normal_name():
+  310      result = subprocess.run(
+  311          [sys.executable, "-m", "greetlab.cli", "--name", "Alice"],
+  312          capture_output=True,
+  313          text=True,
+  314          check=False,
+  315      )
+  316      assert result.returncode == 0
+  317      assert "Hello, Alice" in result.stdout
+  318  def test_blank_name_raise_exit2():
+  319      result = subprocess.run(
+  320          [sys.executable, "-m", "greetlab.cli", "--name", "   "],
+  321          capture_output=True,
+  322          text=True,
+  323          check=False,
+  324      )
+  325      assert result.returncode == 2
+  326  EOF
+  327  pwd
+  328  ls
+  329  ls ~/q10 2>/dev/null && rm -rf q10
+  330  ruff format .
+  331  ./check.sh
+  332  echo $?
+  333  cat << 'EOF' > check.sh
+  334  #!/usr/bin/env bash
+  335  set -euo pipefail
+  336  ruff format --check .
+  337  ruff check .
+  338  python3 -m pytest
+  339  EOF
+  340  python3 -m pip install -e .
+  341  ./check.sh
+  342  echo $?
+  343  ruff format
+  344  ruff check
+  345  pytest
+  346  python3 pytest
+  347  python3 -m pytest
+  348  ouc@islouc-vm:~/q13$ ruff format .
+  349  1 file reformatted, 3 files left unchanged
+  350  ruff format .
+  351  ruff check
+  352  python3 -m pytest
+  353  ruff format --check
+  354  ./check.sh
+  355  echo $?
+  356  cd ..
+  357  mkdir -p q14 && cd q14
+  358  cat << 'EOF' > data.csv
+  359  name,value
+  360  alpha,2
+  361  beta,3
+  362  gamma,5
+  363  EOF
+  364  cat << 'EOF' > stats.py
+  365  import csv
+  366  with open("data.csv") as f:
+  367      total = sum(int(r["value"]) for r in csv.DictReader(f))
+  368  open("stats.txt", "w").write(str(total))
+  369  EOF
+  370  cat << 'EOF' > build_report.py
+  371  text = open("report.md").read()
+  372  total = open("stats.txt").read()
+  373  open("report.txt", "w").write(f"{text}\nTotal: {total}\n")
+  374  EOF
+  375  cat << 'EOF' > report.md
+  376  # Data Report
+  377  EOF
+  378  cat << 'EOF' > Makefile
+  379  .PHONY: all clean
+  380  all: stats.txt report.txt
+  381  stats.txt: data.csv stats.py
+  382      python3 stats.py
+  383  report.txt: report.md stats.txt build_report.py
+  384      python3 build_report.py
+  385  clean:
+  386      rm -f stats.txt report.txt
+  387  EOF
+  388  sed -i 's/^    /\t/' Makefile
+  389  cat -A Makefile
+  390  cat << 'EOF' > Makefile
+  391  .PHONY: all clean
+  392  all: stats.txt report.txt
+  393  stats.txt: data.csv stats.py
+  394      python3 stats.py
+  395  report.txt: report.md stats.txt build_report.py
+  396      python3 build_report.py
+  397  clean:
+  398      rm -f stats.txt report.txt
+  399  EOF
+  400  make
+  401  sed -i 's/^[[:space:]]\+/\t/' Makefile
+  402  cat -A Makefile | head -8
+  403  make
+  404  touch data.csv
+  405  make
+  406  cat stats.txt
+  407  cat report.txt
+  408  make clean
+  409  ls
+  410  cd ..
+  411  mkdir -p q15 && cd q15
+  412  cat << 'EOF' > packages.json
+  413  [
+  414      {"name": "alpha", "status": "active", "downloads": 120, "version": "1.2.0"},
+  415      {"name": "beta", "status": "inactive", "downloads": 900, "version": "2.0.0"},
+  416      {"name": "gamma", "status": "active", "downloads": 450, "version": "1.5.1"},
+  417      {"name": "delta", "status": "active", "downloads": 450, "version": "0.9.0"},
+  418      {"name": "epsilon", "status": "active", "downloads": 80, "version": "3.1.0"}
+  419  ]
+  420  EOF
+  421  python3 -m http.server 8000
+  422  lsof -i :8000
+  423  fuser -k 8000/tcp
+  424  python3 -m http.server 8000
+  425  ss -ltnp | grep :8000
+  426  sudo ss -ltnp | grep :8000
+  427  ss -ltnp | grep :8001    # 没有输出 = 空闲
+  428  python3 -m http.server 8001
+  429  cd ..
+  430  cp -r q13 q16
+  431  cd q16
+  432  git init
+  433  cat << 'EOF' > src/greetlab/cli.py
+  434  import argparse
+  435  def main():
+  436      p = argparse.ArgumentParser()
+  437      p.add_argument("--name", required=True)
+  438      a = p.parse_args()
+  439      if not a.name.strip():
+  440          p.error("name must not be blank")
+  441      print("Hello, name!")
+  442  if __name__ == "__main__":
+  443      main()
+  444  EOF
+  445  ./check.sh
+  446  ruff format .
+  447  ./check.sh
+  448  ruff format
+  449  ruff check
+  450  python3 -m pytest
+  451  grep -n "print" src/greetlab/cli.py
+  452  python3 -m pip install -e .
+  453  ./check.sh
+  454  cat << 'EOF' > src/greetlab/cli.py
+  455  import argparse
+  456  def main():
+  457      p = argparse.ArgumentParser()
+  458      p.add_argument("--name", required=True)
+  459      a = p.parse_args()
+  460      if not a.name.strip():
+  461          p.error("name must not be blank")
+  462      print(f"Hello, {a.name}")
+  463  if __name__ == "__main__":
+  464      main()
+  465  EOF
+  466  ./check.sh
+  467  echo $?
+  468  ruff format .
+  469  ./check.sh
+  470  echo $?
+  471  cat << 'EOF' > Makefile
+  472  .PHONY: check build clean
+  473  check:
+  474      ./check.sh
+  475  build:
+  476      python3 -m build
+  477  clean:
+  478      rm -rf dist build src/*.egg-info
+  479  EOF
+  480  sed -i 's/^[[:space:]]\+/\t/' Makefile
+  481  cat -A Makefile  
+  482  make clean
+  483  make check
+  484  make build
+  485  sha256sum dist/*.whl
+  486  cat << 'EOF' > .gitignore
+  487  __pycache__/
+  488  *.pyc
+  489  dist/
+  490  build/
+  491  *.egg-info/
+  492  .pytest_cache/
+  493  EOF
+  494  git add -A
+  495  git status
+  496  git commit -m "Add quality gate and Makefile, fix blank name handling"
+  497  git log --oneline
+  498  history > commands4.txt
+  499  cd q15
+  500  curl -fsS http://127.0.0.1:8000/packages.json
+  501  curl -fsS http://127.0.0.1:8001/packages.json
+  502  curl -fsS http://127.0.0.1:8001/packages.json   | jq '[.[] | select(.status == "active" and .downloads >= 100)] | sort_by(-.downloads, .name)'
+  503  sudo apt update && sudo apt install -y jq
+  504  curl -fsS http://127.0.0.1:8001/packages.json   | jq '[.[] | select(.status == "active" and .downloads >= 100)] | sort_by(-.downloads, .name)'
+  505  cat << 'EOF' > api_report.sh
+  506  #!/usr/bin/env bash
+  507  set -euo pipefail
+  508  {
+  509      echo "# Package Report"
+  510      echo
+  511      echo "| name | version | downloads |"
+  512      echo "|------|---------|-----------|"
+  513      curl -fsS http://127.0.0.1:8001/packages.json \
+  514          | jq -r '[.[] | select(.status == "active" and .downloads >= 100)] | sort_by(-.downloads, .name)[] | "| \(.name) | \(.version) | \(.downloads) |"'
+  515  } > summary.md
+  516  EOF
+  517  chmod +x api_report.sh
+  518  ./api_report.sh
+  519  cat summary.md
+  520  python3 --version
+  521  which python3
+  522  mkdir -p ~/exp1 && cd ~/exp1
+  523  printenv > before.txt
+  524  echo "$PATH" > before_path.txt
+  525  python3 -m venv venv
+  526  source venv/bin/activate
+  527  which python3
+  528  echo "VIRTUAL_ENV"
+  529  printenv > after.txt
+  530  echo "$PATH" > after_path.txt
+  531  which python3
+  532  mkdir -p ~/exp1 && cd ~/exp1
+  533  printenv > before.txt
+  534  echo "$PATH" > before_path.txt
+  535  python3 -m venv venv
+  536  source venv/bin/activate
+  537  which python3
+  538  echo "VIRTUAL_ENV=$VIRTUAL_ENV"
+  539  printenv > after.txt
+  540  echo "$PATH" > after_path.txt
+  541  diff before.txt after.txt
+  542  diff before_path.txt after_path.txt
+  543  which deactivate
+  544  type deactivate
+  545  cd ..
+  546  source venv/bin/activate
+  547  mkdir -p ~/exp2 && cd exp2
+  548  cat > exp2/greet.py << 'EOF'
+def hello(name: str = "world") -> str:
+    return f"Hello,{name}! (from exp2)"
+EOF
+
+  549  mkdir exp2
+  550  cat > exp2/greet.py << 'EOF'
+def hello(name: str = "world") -> str:
+    return f"Hello, {name}! (from exp2)"
+EOF
+
+  551  cat > exp2/__init__.py << 'EOF'
+from .greet import hello
+__all__ = ["hello"]
+EOF
+
+  552  ls -R
+  553  cat > pyproject.toml << 'EOF'
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "exp2"
+version = "0.1.0"
+description = "A tiny demo package for exp 3"
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.31.0"
+]
+EOF
+
+  554  ls -R
+  555  cat pyproject.toml
+  556  pip install -e .
+  557  python -c "from exp2 import hello; print(hello('ouc'))"
+  558  pip show exp2
+  559  pip install -U pip setuptools wheel
+  560  pip install -e .
+  561  python -c "from exp2 import hello; print(hello('ouc'))"
+  562  pip show exp2
+  563  pip install pip-tools
+  564  pip-compile pyproject.toml -o requirements-lock.txt
+  565  cat requirements-lock.txt
+  566  docker --version
+  567  docker compose version
+  568  cd ..
+  569  mkdir -p ~/exp3 && cd ~/exp3
+  570  cat > app.py << 'EOF'
+import os
+import redis
+from flask import Flask
+app = Flask(__name__)
+r = redis.Redis(
+    host=os.getenv("REDIS_HOST", "redis"),
+    port=6379,
+    decode_responses=True,
+)
+@app.route("/")
+def index():
+    cnt = r.incr("hits")
+    return f"Hello from container! This page has been viewed {cnt} times.\n"
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+EOF
+
+  571  cat > requirements.txt << 'EOF'
+flask
+redis
+EOF
+
+  572  cat > Dockerfile << 'EOF'
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app.py .
+EXPOSE 5000
+CMD ["python", "app.py"]
+EOF
+
+  573  cat > docker-compose.yml << 'EOF'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+  redis:
+    image: redis:7-alpine
+EOF
+
+  574  ls -la
+  575  cd ~/exp3
+  576  docker compose up --build
+  577  sudo mkdir -p /etc/docker
+  578  sudo tee /etc/docker/daemon.json << 'EOF'
+{
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://docker.mirrors.ustc.edu.cn",
+    "https://docker.1panel.live",
+    "https://hub-mirror.c.163.com"
+  ]
+}
+EOF
+
+  579  sudo systemctl daemon-reload
+  580  sudo systemctl restart docker
+  581  docker info | grep -A 5 "Registry Mirrors"
+  582  cd ~/exp3
+  583  docker compose up --build
+  584  cd ~/exp3
+  585  cat > Dockerfile << 'EOF'
+FROM python:3.11-alpine
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app.py .
+EXPOSE 5000
+CMD ["python", "app.py"]
+EOF
+
+  586  docker compose up --build -d
+  587  docker pull docker.m.daocloud.io/library/python:3.11-alpine
+  588  cd ~/exp3
+  589  cat > Dockerfile << 'EOF'
+FROM docker.m.daocloud.io/library/python:3.11-alpine
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app.py .
+EXPOSE 5000
+CMD ["python", "app.py"]
+EOF
+
+  590  docker compose up --build -d
+  591  cd ..
+  592  mkdir -p ~/exp5 && cd ~/exp5
+  593  cp ~/redis/README.md ./redis.md
+  594  curl -sL shturl.cc/veQnS3pBj6rmFQ3hL4reBNTxkbwtNzx8mePDTdEDaHF -o requests.md
+  595  curl -sL shturl.cc/2PF6SL9jvIqMAz21grPY62xVyr6oEYwSE5ovCibrSTI1RxuBeXk -o awesome-python.md
+  596  ls -la *.md
+  597  curl -sL shturl.cc/C4SheKDwWv4a7bpzpRzdE2VrcprWob9pNTSkYwTDnDU -o requests.md
+  598  curl -sL shturl.cc/QTFZSM3l4mSD9aWU8RDCQvdu8kcheppySysuAF4Z68QPaYqpzG6 -o awesome-python.md
+  599  ls -la *.md
+  600  curl -sL shturl.cc/JVmmdpyrNJ6JYtBssqUhy1zoeqxb05K65qYA4dYTnhM2t -o requests.md
+  601  curl -sL shturl.cc/2pkT1Pl81iaEo17RfEvXcD886yswgkvAI45KSJzTqxi4fFxqEnF -o awesome-python.md
+  602  ls -la *.md
+  603  git clone --depth 1 shturl.cc/ZBYzaEXbmm5KXJkaRDozMF9fBo3l
+  604  git clone --depth 1 shturl.cc/iOWkzkdRndEeNOqPIpc2DbM83zBMwZvSFw
+  605  cp requests/README.md ./requests.md
+  606  cp awesome-python/README.md ./awesome-python.md
+  607  git clone --depth 1 shturl.cc/43NB0sIprMxvLlr1mNXvqZAtRvPLCi5Q63
+  608  cd ~/exp5
+  609  git clone --depth 1 shturl.cc/ePkNACe6mirrors/requests.git
+  610  G="https://""gitee.com"
+  611  echo $G
+  612  git clone --depth 1 $G/mirrors/requests.git
+  613  git clone --depth 1 $G/mirrors_awesome-python.git
+  614  git clone --depth 1 $G/mirrors/awesome-python.git
+  615  cp mirrors/awesome-python/README.md ./awesome-python.md
+  616  ls -d */
+  617  cp awesome-python/README.md ./awesome-python.md
+  618  ls -la *.md
+  619  cp requests/README.md ./requests.md
+  620  ls -la *.md
+  621  cd ~/exp5
+  622  echo "=== 行数 ==="
+  623  wc -l redis.md requests.md awesome-python.md
+  624  echo ""
+  625  echo "=== 字数 ==="
+  626  wc -w redis.md requests.md awesome-python.md
+  627  echo ""
+  628  echo "=== 图片/徽章数量 ==="
+  629  for f in redis.md requests.md awesome-python.md; do   echo -n "$f: "; done
+  630  echo ""
+  631  echo "=== 代码块数量 ==="
+  632  for f in redis.md requests.md awesome-python.md; do   echo -n "$f: ";   grep -c '```' "$f"; done
+  633  echo ""
+  634  echo "=== 标题数量 ==="
+  635  for f in redis.md requests.md awesome-python.md; do   echo -n "$f: ";   grep -c "^#" "$f"; done
+  636  cd ~/exp5
+  637  echo "=== 图片/徽章数量 ==="
+  638  for f in redis.md requests.md awesome-python.md; do   echo -n "$f: ";   grep -cF '![' "$f"; done
+  639  echo ""
+  640  echo "=== 首屏对比 ==="
+  641  echo "--- redis.md 前 20 行 ---"
+  642  head -20 redis.md
+  643  echo ""
+  644  echo "--- requests.md 前 20 行 ---"
+  645  head -20 requests.md
+  646  echo ""
+  647  echo "--- awesome-python.md 前 20 行 ---"
+  648  head -20 awesome-python.md
+  649  cd ..
+  650  mkdir -p ~/exp7/website && cd ~/exp7
+  651  cat > website/index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>一班班级主页</title>
+    <style>
+        body { font-family: "Microsoft YaHei", sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #f5f5f5; }
+
+        header { background: #2c3e50; color: white; padding: 30px; border-radius: 8px; text-align: center; }
+
+        section { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 8px; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: center; }
+
+        th { background: #3498db; color: white; }
+
+        ul { line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>计算机科学与技术 一班</h1>
+        <p>欢迎来到我们的班级主页</p>
+    </header>
+    <section>
+        <h2>班级简介</h2>
+        <p>一班共有学生35人，其中男生28人，女生7人。本学期开设课程包括操作系统、计算机网络、编译原理、软件工程等。</p>
+    </section>
+    <section>
+        <h2>本周课程表</h2>
+        <table>
+            <tr><th>时间</th><th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th></tr>
+            <tr><td>1-2节</td><td>操作系统</td><td>计算机网络</td><td>编译原理</td><td>软件工程</td><td>操作系统</td></tr>
+            <tr><td>3-4节</td><td>计算机网络</td><td>编译原理</td><td>操作系统</td><td>计算机网络</td><td>体育</td></tr>
+            <tr><td>5-6节</td><td>编译原理</td><td>操作系统</td><td>软件工程</td><td>自习</td><td>编译原理</td></tr>
+        </table>
+    </section>
+    <section>
+        <h2>班级成员</h2>
+        <ul>
+            <li>班主任：张老师</li>
+            <li>班长：李同学</li>
+            <li>学习委员：王同学</li>
+            <li>生活委员：赵同学</li>
+        </ul>
+    </section>
+</body>
+</html>
+EOF
+
+  652  cat > Dockerfile << 'EOF'
+FROM docker.m.daocloud.io/library/nginx:alpine
+COPY website/ /usr/share/nginx/html/
+EXPOSE 80
+EOF
+
+  653  cat > docker-compose.yml << 'EOF'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+EOF
+
+  654  docker compose up --build -d
+  655  curl http://localhost:8080/
+  656  docker compose ps
+  657  docker compose logs web
+  658  curl http://127.0.0.1:8080/
+  659  docker compose ps
+  660  cd ..
+  661  mkdir -p ~/exp9/my-project && cd ~/exp9/my-project
+  662  mkdir -p src tests docs
+  663  cat > src/main.py << 'EOF'
+def add(a, b):
+    return a + b
+EOF
+
+  664  cat > tests/test_main.py << 'EOF'
+from src.main import add
+def test_add():
+    assert add(1, 2) == 3
+EOF
+
+  665  cat > AGENTS.md << 'EOF'
+# 项目说明（给 AI 编程助手看）
+
+## 项目概览
+
+这是一个 Python 学习项目，用于练习模块开发和测试。
+## 构建与测试
+
+- 运行测试：`python3 -m pytest tests/ -v`
+- 代码风格：遵循 PEP 8，行宽 88 字符
+- 不使用 Python 2 语法
+## 目录结构
+
+- `src/`：业务代码
+- `tests/`：pytest 测试
+- `docs/`：文档
+## 规则
+
+1. 写新功能前先写测试
+2. 函数必须有类型标注
+3. 不要在主分支直接提交，先开分支
+EOF
+
+  666  mkdir -p .agents/skills/code-review
+  667  cat > .agents/skills/code-review/SKILL.md << 'EOF'
+# Skill: code-review
+
+## 描述
+
+审查一段 Python 代码，检查：
+- 是否有类型标注
+- 是否有对应的测试
+- 是否遵循 PEP 8
+- 函数是否过长（超过 30 行提示拆分）
+## 使用时机
+
+当用户要求"审查代码"、"review"、"看看这段代码有没有问题"时触发。
+## 输出格式
+
+1. 列出发现的问题（按严重程度排序）
+2. 给出修改建议
+3. 没有问题时明确说"通过"
+EOF
+
+  668  mkdir -p .agents/agents/test-writer
+  669  cat > .agents/agents/test-writer/AGENT.md << 'EOF'
+# 子智能体：test-writer
+
+## 角色
+
+你是一个专门写测试的智能体。
+## 职责
+
+- 为给定的 Python 函数编写 pytest 测试
+- 覆盖正常情况、边界情况、异常情况
+- 不修改源代码，只写测试文件
+## 输入
+
+用户提供源代码文件路径。
+## 输出
+
+在 tests/ 目录下创建对应的测试文件，并简要说明覆盖了哪些场景。
+EOF
+
+  670  cat > .agents/main.md << 'EOF'
+# 主智能体配置
+
+## 子智能体
+
+- test-writer：当用户要求"写测试"、"补测试"、"增加覆盖率"时，调用 test-writer 子智能体
+- code-review：当用户要求"审查代码"、"review"时，使用 code-review Skill
+## 默认行为
+
+- 回答问题前先读 AGENTS.md
+- 不确定项目约定时，问用户而不是猜
+EOF
+
+  671  find . -type f | sort
+  672  mkdir -p ~/exp10 && cd ~/exp10
+  673  cat > todo.py << 'EOF'
+import json
+import sys
+from pathlib import Path
+
+TODO_FILE = Path.home() / ".todo_list.json"
+
+def load_todos():
+    if TODO_FILE.exists():
+        with open(TODO_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+def save_todos(todos):
+    with open(TODO_FILE, "w", encoding="utf-8") as f:
+        json.dump(todos, f, ensure_ascii=False, indent=2)
+
+def add_task(text):
+    todos = load_todos()
+    todos.append({"task": text, "done": False})
+    save_todos(todos)
+    print(f"已添加: {text}")
+
+def list_tasks():
+    todos = load_todos()
+    if not todos:
+        print("暂无任务")
+        return
+    for i, t in enumerate(todos, 1):
+        mark = "[x]" if t["done"] else "[ ]"
+        print(f"{i}. {mark} {t['task']}")
+
+def done_task(index):
+    todos = load_todos()
+    if 1 <= index <= len(todos):
+        todos[index - 1]["done"] = True
+        save_todos(todos)
+        print(f"已完成: {todos[index - 1]['task']}")
+    else:
+        print("序号不存在")
+
+def delete_task(index):
+    todos = load_todos()
+    if 1 <= index <= len(todos):
+        removed = todos.pop(index - 1)
+        save_todos(todos)
+        print(f"已删除: {removed['task']}")
+    else:
+        print("序号不存在")
+
+def main():
+    if len(sys.argv) < 2:
+        print("用法: python todo.py <add|list|done|delete> [内容/序号]")
+        return
+    cmd = sys.argv[1]
+    if cmd == "add":
+        add_task(" ".join(sys.argv[2:]))
+    elif cmd == "list":
+        list_tasks()
+    elif cmd == "done":
+        done_task(int(sys.argv[2]))
+    elif cmd == "delete":
+        delete_task(int(sys.argv[2]))
+    else:
+        print(f"未知命令: {cmd}")
+
+if __name__ == "__main__":
+    main()
+EOF
+
+  674  cd ~/exp10
+  675  python3 todo.py add 买牛奶
+  676  python3 todo.py add 写实验报告
+  677  python3 todo.py add 跑步30分钟
+  678  python3 todo.py list
+  679  python3 todo.py done 2
+  680  python3 todo.py list
+  681  python3 todo.py delete 1
+  682  python3 todo.py list
+  683  cd ~/exp2
+  684  source venv/bin/activate
+  685  cd ~/exp2
+  686  grep "^name" pyproject.toml
+  687  sed -i 's/^name = "exp2"/name = "ouc-exp6"/' pyproject.toml
+  688  grep "^name" pyproject.toml
+  689  pip install build twine
+  690  python -m build
+  691  ls -la dist/python -m twine upload --repository testpypi dist/*
+  692  ls -la dist/
+  693  python -m twine upload --repository testpypi dist/*
+  694  cd /tmp
+  695  python3 -m venv verifyenv
+  696  source verifyenv/bin/activate
+  697  pip install --index-url https://test.pypi.org/simple/ ouc-exp6
+  698  python -c "from exp2 import hello; print(hello('test'))"
+  699  pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ ouc-exp6
+  700  python -c "from exp2 import hello; print(hello('test'))"python -c "from exp2 import hello; print(hello('test'))"
+  701  python -c "from exp2 import hello; print(hello('test'))"
+  702  mkdir -p ~/exp6 && cd ~/exp6
+  703  cat > Dockerfile << 'EOF'
+FROM docker.m.daocloud.io/library/python:3.11-slim
+RUN pip install --no-cache-dir --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ ouc-exp6
+CMD ["python", "-c", "from exp2 import hello; print(hello('docker'))"]
+EOF
+
+  704  docker build -t ouc-exp6 .
+  705  cd ~/exp6
+  706  cat > Dockerfile << 'EOF'
+FROM docker.m.daocloud.io/library/python:3.11-alpine
+RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    --index-url https://test.pypi.org/simple/ \
+    --extra-index-url https://pypi.tuna.tsinghua.edu.cn/simple/ \
+    ouc-exp6
+CMD ["python", "-c", "from exp2 import hello; print(hello('docker'))"]
+EOF
+
+  707  docker build -t ouc-exp6 .
+  708  docker run --rm ouc-exp6
+  709  docker images ouc-exp6
+  710  docker run --rm ouc-exp6
+  711  mkdir -p ~/exp8 && cd ~/exp8
+  712  cp ~/exp7/website/index.html ./index.html
+  713  git init
+  714  git add .
+  715  git commit -m "class website"
+  716  G="https://""gitee.com"
+  717  git remote add origin $G/Yan-Cheng-yi/class-website.git
+  718  git push -u origin master
+  719  mkdir -p ~/exp8 && cd ~/exp8
+  720  cp ~/exp7/website/index.html ./index.html
+  721  git init
+  722  git add .
+  723  git commit -m "class website"
+  724  G="https://""gitee.com"
+  725  git remote add origin $G/Yan-Cheng-yi/class-website.git
+  726  git push -u origin master
+  727  cd ~/exp8
+  728  git push -u origin master
+  729  cd ~/exp8
+  730  G="https://""gitee.com"
+  731  git remote set-url origin $G/Yan-Cheng-yi:dfd6fc2ff91ef39ce5b88d068648eafa@ Yan-Cheng-yi/class-website.git
+  732  git push -u origin master
+  733  cd ~/exp8
+  734  git remote set-url origin shturl.cc/TzWp0qt3VP1boMMAq4Nl0VsJiLMTuj2xGGW6kEoewCBflWtoHow93iiYNva0Ma6XFKPnPiSGYTqrIFxXZAb0
+  735  git push -u origin master
+  736  cd ~/exp8
+  737  B="shturl.cc/0NYPhGHpL1bR8Tre80ubwZSUBwXx0g9S7RtEhZ1HRziqx37WWiKH77"
+  738  git remote set-url origin ${B}shturl.cc/A0r5DCG399nMdWGYwlfeDbYR7nFWga
+  739  git push -u origin master
+  740  cd ~/exp8
+  741  cat > .git/config << 'EOF'
+[core]
+repositoryformatversion = 0
+filemode = true
+bare = false
+logallrefupdates = true
+[remote "origin"]
+url = shturl.cc/317u8c37r3Lka4f45cC5Roe8geuQ94I6b37B3PzG9NZzG2k0ikDxMGCfRH4N85mu13aIdqA5Qr2luXnL6nDK
+fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+remote = origin
+merge = refs/heads/master
+EOF
+
+  742  git push -u origin master
+  743  cd ~/exp8
+  744  A="https://"
+  745  B="Yan-Cheng-yi:dfd6fc2ff91ef39ce5b88d068648eafa@"
+  746  C="gitee.com"
+  747  D="/Yan-Cheng-yi/class-website.git"
+  748  git remote set-url origin ${A}${B}${C}${D}
+  749  git push -u origin master
+  750  cd ~/exp8
+  751  A="https://"
+  752  B="Yan-Cheng-yi:bbefc4596a39724f8bae6b54cc28298a@"
+  753  C="gitee.com"
+  754  D="/Yan-Cheng-yi/class-website.git"
+  755  git remote set-url origin ${A}${B}${C}${D}
+  756  git push -u origin master
+  757  cd ~/exp8
+  758  A="https://"
+  759  B="bbefc4596a39724f8bae6b54cc28298a:x-oauth-basic@"
+  760  C="gitee.com"
+  761  D="/Yan-Cheng-yi/class-website.git"
+  762  git remote set-url origin ${A}${B}${C}${D}
+  763  git push -u origin master
+  764  B="oauth2:bbefc4596a39724f8bae6b54cc28298a@"
+  765  git remote set-url origin ${A}${B}${C}${D}
+  766  git push -u origin master
+  767  cd ~/exp8
+  768  A="https://"
+  769  B="oauth2:bbefc4596a39724f8bae6b54cc28298a@"
+  770  C="gitee.com"
+  771  D="/yan-cheng-city/class-website.git"
+  772  git remote set-url origin ${A}${B}${C}${D}
+  773  git push -u origin master
+  774  history > my_commands.txt
